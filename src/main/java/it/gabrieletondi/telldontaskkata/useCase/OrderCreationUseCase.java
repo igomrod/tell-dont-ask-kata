@@ -23,9 +23,8 @@ public class OrderCreationUseCase {
     }
 
     public void run(SellItemsRequest request) {
-        Order order = new Order();
-        order.setItems(new ArrayList<>());
-        order.setCurrency("EUR");
+        Order order = new Order("EUR");
+
         order.setTotal(new BigDecimal("0.00"));
         order.setTax(new BigDecimal("0.00"));
 
@@ -46,7 +45,7 @@ public class OrderCreationUseCase {
                 orderItem.setQuantity(itemRequest.getQuantity());
                 orderItem.setTax(taxAmount);
                 orderItem.setTaxedAmount(taxedAmount);
-                order.getItems().add(orderItem);
+                order.addItem(orderItem);
 
                 order.setTotal(order.getTotal().add(taxedAmount));
                 order.setTax(order.getTax().add(taxAmount));
