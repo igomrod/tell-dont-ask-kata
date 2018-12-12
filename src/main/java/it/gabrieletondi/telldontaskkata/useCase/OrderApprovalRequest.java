@@ -19,4 +19,5 @@ public class OrderApprovalRequest {
     public boolean isApproved() {
         return approved;
     }
+
 }

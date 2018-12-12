@@ -36,10 +36,6 @@ public class Order {
         return currency;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
     public List<OrderItem> getItems() {
         return items;
     }
