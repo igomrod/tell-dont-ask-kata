@@ -1,8 +1,14 @@
 package it.gabrieletondi.telldontaskkata.domain;
 
+import it.gabrieletondi.telldontaskkata.useCase.*;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.CREATED;
+import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.REJECTED;
+import static it.gabrieletondi.telldontaskkata.domain.OrderStatus.SHIPPED;
 
 public class Order {
     private BigDecimal total;
@@ -57,14 +63,39 @@ public class Order {
     }
 
     public void ship() {
+
+        if (getStatus().equals(CREATED) || getStatus().equals(REJECTED)) {
+            throw new OrderCannotBeShippedException();
+        }
+
+        if (getStatus().equals(SHIPPED)) {
+            throw new OrderCannotBeShippedTwiceException();
+        }
+
         this.status = OrderStatus.SHIPPED;
     }
 
     public void approve() {
+        if (getStatus().equals(OrderStatus.SHIPPED)) {
+            throw new ShippedOrdersCannotBeChangedException();
+        }
+
+        if (getStatus().equals(OrderStatus.REJECTED)) {
+            throw new RejectedOrderCannotBeApprovedException();
+        }
+
         this.status = OrderStatus.APPROVED;
     }
 
     public void reject() {
+        if (getStatus().equals(OrderStatus.SHIPPED)) {
+            throw new ShippedOrdersCannotBeChangedException();
+        }
+
+        if (getStatus().equals(OrderStatus.APPROVED)) {
+            throw new ApprovedOrderCannotBeRejectedException();
+        }
+
         this.status = OrderStatus.REJECTED;
     }
 

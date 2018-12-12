@@ -18,13 +18,9 @@ public class OrderItem {
     public OrderItem(Product product, int quantity) {
         this();
 
-        final BigDecimal unitaryTax = product.getPrice().divide(valueOf(100)).multiply(product.getCategory().getTaxPercentage()).setScale(2, HALF_UP);
-        final BigDecimal unitaryTaxedAmount = product.getPrice().add(unitaryTax).setScale(2, HALF_UP);
-
         this.product = product;
         this.quantity = quantity;
-        this.taxedAmount = unitaryTaxedAmount.multiply(BigDecimal.valueOf(quantity)).setScale(2, HALF_UP);;
-        this.tax = unitaryTax.multiply(BigDecimal.valueOf(quantity));
+
     }
 
     public Product getProduct() {
@@ -36,11 +32,20 @@ public class OrderItem {
     }
 
     public BigDecimal getTaxedAmount() {
-        return taxedAmount;
+        return getUnitaryTaxedAmount().multiply(BigDecimal.valueOf(quantity)).setScale(2, HALF_UP);
+    }
+
+    private BigDecimal getUnitaryTaxedAmount() {
+        return product.getPrice().add(getUnitaryTax()).setScale(2, HALF_UP);
+    }
+
+    private BigDecimal getUnitaryTax() {
+        return product.getPrice().divide(valueOf(100)).multiply(product.getCategory().getTaxPercentage()).setScale(2, HALF_UP);
     }
 
     public BigDecimal getTax() {
-        return tax;
+
+        return getUnitaryTax().multiply(BigDecimal.valueOf(quantity));
     }
 
 }

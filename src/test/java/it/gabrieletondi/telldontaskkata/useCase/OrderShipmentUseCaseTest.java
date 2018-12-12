@@ -66,6 +66,7 @@ public class OrderShipmentUseCaseTest {
     public void shippedOrdersCannotBeShippedAgain() throws Exception {
         Order initialOrder = new Order();
         initialOrder.setId(1);
+        initialOrder.approve();
         initialOrder.ship();
         orderRepository.addOrder(initialOrder);
 

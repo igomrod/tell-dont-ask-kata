@@ -80,6 +80,7 @@ public class OrderApprovalUseCaseTest {
     @Test(expected = ShippedOrdersCannotBeChangedException.class)
     public void shippedOrdersCannotBeApproved() throws Exception {
         Order initialOrder = new Order();
+        initialOrder.approve();
         initialOrder.ship();
         initialOrder.setId(1);
         orderRepository.addOrder(initialOrder);
@@ -96,6 +97,7 @@ public class OrderApprovalUseCaseTest {
     @Test(expected = ShippedOrdersCannotBeChangedException.class)
     public void shippedOrdersCannotBeRejected() throws Exception {
         Order initialOrder = new Order();
+        initialOrder.approve();
         initialOrder.ship();
         initialOrder.setId(1);
         orderRepository.addOrder(initialOrder);
