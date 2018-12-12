@@ -15,19 +15,21 @@ public class Order {
     public Order() {
         this.status = OrderStatus.CREATED;
         this.items = new ArrayList<>();
+
+        this.total = new BigDecimal("0.00");
+        this.tax = new BigDecimal("0.00");
     }
 
-    public Order(String currency) {
+    public Order(String currency, BigDecimal total, BigDecimal tax) {
         this();
         this.currency = currency;
+
+        this.total = total;
+        this.tax = tax;
     }
 
     public BigDecimal getTotal() {
         return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
     }
 
     public String getCurrency() {
@@ -44,10 +46,6 @@ public class Order {
 
     public BigDecimal getTax() {
         return tax;
-    }
-
-    public void setTax(BigDecimal tax) {
-        this.tax = tax;
     }
 
     public OrderStatus getStatus() {
@@ -76,5 +74,7 @@ public class Order {
 
     public void addItem(OrderItem orderItem) {
         this.items.add(orderItem);
+        total = total.add(orderItem.getTaxedAmount());
+        tax = tax.add(orderItem.getTax());
     }
 }
