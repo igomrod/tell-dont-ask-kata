@@ -1,15 +1,21 @@
 package it.gabrieletondi.telldontaskkata.useCase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SellItemsRequest {
     private List<SellItemRequest> requests;
 
-    public void setRequests(List<SellItemRequest> requests) {
-        this.requests = requests;
+    public SellItemsRequest() {
+        this.requests = new ArrayList<>();
     }
 
     public List<SellItemRequest> getRequests() {
         return requests;
     }
+
+    public void addItem(SellItemRequest sellItemRequest) {
+        this.requests.add(sellItemRequest);
+    }
+
 }
